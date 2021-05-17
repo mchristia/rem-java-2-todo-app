@@ -5,5 +5,10 @@
 }
 
 body {
-  background: black;
+  background: orange;
+}
+
+.Frame {
+  border: solid green;
+  padding: 2em;
 }
