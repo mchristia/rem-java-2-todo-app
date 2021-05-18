@@ -1,10 +1,10 @@
-function TodoCard({ todo, updateTodo }) {
+function TodoCard({ todo, updateTodo, deleteTodo }) {
   return (
     <section className="Card">
       <p>{todo.description}</p>
 
-        <button onClick={() => {updateTodo(todo)}}>advance</button>
-        <button>delete</button>
+      <button disabled = {todo.status === 'DONE'} onClick={() => updateTodo(todo)}>advance</button>
+        <button onClick={() => deleteTodo(todo)}>delete</button>
     </section>
   );
 }

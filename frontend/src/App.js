@@ -38,17 +38,6 @@ function App() {
       .then((todos) => setTodoList(todos));
   }
 
-  const advanceTodo = (id) => {
-      const oldTodo = todo.find(todo => todo.id === id)
-
-      axios.put('/api/todo/' +id, {... oldTodo,
-          status: getNextStatus(oldTodo.status)})
-          .then(response => response.data)
-          .then(updateTodo => {
-              setTodos(todos.map(todo => (todo.id ===id ? updateedTodo : todo)))
-          })
-  }
-
   //Auslagern
     const nextStatus = {
         OPEN: "IN_PROGRESS",
@@ -56,20 +45,29 @@ function App() {
         DONE: "DONE"
 
     }
+    const getNextStatus = status => nextStatus[status];
 
-    const removeTodo = id => {
-
-    }
 
   function updateTodo(todoItem) {
 
       if (todoItem.status === "OPEN") {
           setTodoStatus("IN_PROGRESS")
-      } else if (todoItem.status === "IN_PROGRESS")
+      } else if(todoItem.status === "IN_PROGRESS"){
+          setTodoStatus("DONE")
+      }
       axios
-          .put("/api/todo/" + todoItem.id)
+          .put("/api/todo/" + todoItem.id, {...todoItem, status: getNextStatus(todoItem.status)})
           .then((response) => response.data)
-          .then((todo) => setTodoList([...todoList, todo]));
+          .then((updatedTodo) => {
+              setTodoList(todoList.map(item => (item.id === todoItem.id ? updatedTodo : item)))
+          })
+          .catch(error => console.error(error));
+  }
+
+  function deleteTodo(todoItem){
+        axios.delete("/api/todo/" + todoItem.id).then(() => {
+            setTodoList(todoList.filter(todo => todo.id !== todoItem.id))
+        })
   }
 
   // @PutMapping("{id}")
@@ -103,19 +101,19 @@ function App() {
         <div>
           <p className="Open">Open</p>
           {openTodos.map((todo) => (
-            <TodoCard key={todo.id} todo={todo} updateTodo={updateTodo} />
+            <TodoCard key={todo.id} todo={todo} updateTodo={updateTodo} deleteTodo={deleteTodo}/>
           ))}
         </div>
         <div>
           <p className="InProgress">In Progress</p>
           {doingTodos.map((todo) => (
-            <TodoCard key={todo.id} todo={todo} updateTodo={updateTodo}/>
+            <TodoCard key={todo.id} todo={todo} updateTodo={updateTodo} deleteTodo={deleteTodo}/>
           ))}
         </div>
         <div>
           <p className="Done">Done</p>
           {doneTodos.map((todo) => (
-            <TodoCard key={todo.id} todo={todo} updateTodo={updateTodo}/>
+            <TodoCard key={todo.id} todo={todo} updateTodo={updateTodo} deleteTodo={deleteTodo}/>
           ))}
         </div>
       </Gallery>
