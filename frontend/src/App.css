@@ -1,25 +1,25 @@
 .App {
   text-align: center;
-  background: blueviolet;
+  background:#0f4c75;
   font-color: white;
 }
 
 body {
-  background: orange;
+  background: #1b262c;
 }
 
 .Open {
-  border: solid green;
+  border: #3282b8;
   padding: 2em;
 }
 
 .InProgress {
-  border: solid green;
+  border: #3282b8;
   padding: 2em;
 }
 
 .Done {
-  border: solid green;
+  border: #3282b8;
   padding: 2em;
 }
 

@@ -11,13 +11,14 @@ function App() {
 
   const Gallery = styled.section`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr; 
     grid-column-gap: 10px;
     background-color: antiquewhite;
   `;
 
   const [todoList, setTodoList] = useState([]);
   const [todoDescription, setTodoDescription] = useState("");
+  const [todoStatus, setTodoStatus] = useState("");
   const openTodos = todoList.filter((todo) => todo.status === "OPEN");
   const doingTodos = todoList.filter((todo) => todo.status === "IN_PROGRESS");
   const doneTodos = todoList.filter((todo) => todo.status === "DONE");
@@ -25,7 +26,7 @@ function App() {
 
   function addTodo() {
     axios
-      .post("/api/todo", { description: todoDescription, status: "IN_PROGRESS" })
+      .post("/api/todo", { description: todoDescription, status: "OPEN" })
       .then((response) => response.data)
       .then((todoItem) => setTodoList([...todoList, todoItem]));
   }
@@ -37,11 +38,39 @@ function App() {
       .then((todos) => setTodoList(todos));
   }
 
-  // function updateTodo() {
-  //     axios
-  //         .put("/api/todo")
-  // }
-  //
+  const advanceTodo = (id) => {
+      const oldTodo = todo.find(todo => todo.id === id)
+
+      axios.put('/api/todo/' +id, {... oldTodo,
+          status: getNextStatus(oldTodo.status)})
+          .then(response => response.data)
+          .then(updateTodo => {
+              setTodos(todos.map(todo => (todo.id ===id ? updateedTodo : todo)))
+          })
+  }
+    https://github.com/fabianschmauder/rem-java-2-todo-app.git
+  //Auslagern
+    const nextStatus = {
+        OPEN: "IN_PROGRESS",
+        IN_PROGRESS: "DONE",
+        DONE: "DONE"
+
+    }
+
+    const removeTodo = id => {
+
+    }
+
+  function updateTodo(todoItem) {
+
+      if (todoItem.status === "OPEN") {
+          setTodoStatus("IN_PROGRESS")
+      } else if (todoItem.status === "IN_PROGRESS")
+      axios
+          .put("/api/todo/" + todoItem.id)
+          .then((response) => response.data)
+          .then((todo) => setTodoList([...todoList, todo]));
+  }
 
   // @PutMapping("{id}")
     //     public TodoItem updateTodoItem(@RequestBody TodoItem item) {
@@ -72,21 +101,21 @@ function App() {
 
       <Gallery>
         <div>
-          <p className="Open">ToDo</p>
+          <p className="Open">Open</p>
           {openTodos.map((todo) => (
-            <TodoCard key={todo.id} todo={todo} />
+            <TodoCard key={todo.id} todo={todo} updateTodo={updateTodo} />
           ))}
         </div>
         <div>
           <p className="InProgress">In Progress</p>
           {doingTodos.map((todo) => (
-            <TodoCard key={todo.id} todo={todo} />
+            <TodoCard key={todo.id} todo={todo} updateTodo={updateTodo}/>
           ))}
         </div>
         <div>
           <p className="Done">Done</p>
           {doneTodos.map((todo) => (
-            <TodoCard key={todo.id} todo={todo} />
+            <TodoCard key={todo.id} todo={todo} updateTodo={updateTodo}/>
           ))}
         </div>
       </Gallery>

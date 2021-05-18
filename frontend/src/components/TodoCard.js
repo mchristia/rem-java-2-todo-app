@@ -1,9 +1,9 @@
-function TodoCard({ todo }) {
+function TodoCard({ todo, updateTodo }) {
   return (
     <section className="Card">
       <p>{todo.description}</p>
 
-        <button>advance</button>
+        <button onClick={() => {updateTodo(todo)}}>advance</button>
         <button>delete</button>
     </section>
   );
