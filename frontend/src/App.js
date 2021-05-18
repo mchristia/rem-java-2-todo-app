@@ -48,7 +48,7 @@ function App() {
               setTodos(todos.map(todo => (todo.id ===id ? updateedTodo : todo)))
           })
   }
-    https://github.com/fabianschmauder/rem-java-2-todo-app.git
+
   //Auslagern
     const nextStatus = {
         OPEN: "IN_PROGRESS",
