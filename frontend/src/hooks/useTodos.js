@@ -26,6 +26,15 @@ export default function useTodos() {
       .catch(error => console.error(error))
   }
 
+  const updateTodo = todo => {
+    axios.put('/api/todo/'+todo.id, todo)
+        .then(response => response.data)
+        .then(updatedTodo => {
+          setTodos(todos.map(item => (item.id === todo.id ? updatedTodo : item)))
+        })
+        .catch(error => console.error(error))
+  }
+
   const removeTodo = id => {
     axios.delete('/api/todo/' + id).then(() => {
       setTodos(todos.filter(todo => todo.id !== id))
@@ -50,6 +59,7 @@ export default function useTodos() {
     advanceTodo,
     addNewTodo,
     removeTodo,
+    updateTodo,
     getTodosByStatus,
   }
 }
