@@ -23,18 +23,21 @@ public class TodoItemService {
     }
 
     public List<TodoItem> listItems(){
-        return todoItemRepository.listItems();
+        return todoItemRepository.findAll();
     }
 
     public TodoItem addItem(AddTodoItemDto itemToAdd) {
         String id = idUtils.generateUuid();
         TodoItem todoItem = new TodoItem(id, itemToAdd.getDescription(), itemToAdd.getStatus());
-        todoItemRepository.add(todoItem);
+        todoItemRepository.save(todoItem);
         return todoItem;
     }
 
     public TodoItem updateTodoItem(TodoItem item) {
-        return todoItemRepository.update(item);
+        if(!todoItemRepository.existsById(item.getId())) {
+            throw new IllegalArgumentException();
+        }
+        return todoItemRepository.save(item);
     }
 
     public Optional<TodoItem> findById(String id) {
