@@ -37,14 +37,14 @@ class TodoItemControllerTest {
 
     @BeforeEach
     public void clearRepository() {
-        repository.clear();
+        repository.deleteAll();
     }
 
     @Test
     public void getTodoItemsShouldReturnItemsFromDb() {
         //GIVEN
-        repository.add(new TodoItem("1", "fancy", "OPEN"));
-        repository.add(new TodoItem("2", "super ", "IN_PROGRESS"));
+        repository.save(new TodoItem("1", "fancy", "OPEN"));
+        repository.save(new TodoItem("2", "super ", "IN_PROGRESS"));
 
         //WHEN
         ResponseEntity<TodoItem[]> response = restTemplate.getForEntity("http://localhost:" + port + "/api/todo", TodoItem[].class);
@@ -66,22 +66,22 @@ class TodoItemControllerTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(new TodoItem("42", "Hallo", "IN_PROGRESS")));
 
-        List<TodoItem> todoItems = repository.listItems();
+        List<TodoItem> todoItems = repository.findAll();
         assertThat(todoItems, hasItem(new TodoItem("42", "Hallo", "IN_PROGRESS")));
     }
 
     @Test
     public void putTodoItemShouldUpdateItem() {
         //GIVEN
-        repository.add(new TodoItem("1", "fancy", "OPEN"));
-        repository.add(new TodoItem("2", "super ", "IN_PROGRESS"));
+        repository.save(new TodoItem("1", "fancy", "OPEN"));
+        repository.save(new TodoItem("2", "super ", "IN_PROGRESS"));
 
         //WHEN
         TodoItem updatedTodo = new TodoItem("2", "super 2", "OPEN");
         restTemplate.put("http://localhost:" + port + "/api/todo/2", updatedTodo, TodoItem.class);
 
         //THEN
-        List<TodoItem> todoItems = repository.listItems();
+        List<TodoItem> todoItems = repository.findAll();
         assertThat(todoItems, containsInAnyOrder(
                 new TodoItem("1", "fancy", "OPEN"),
                 new TodoItem("2", "super 2", "OPEN")));
@@ -90,7 +90,7 @@ class TodoItemControllerTest {
     @Test
     public void whenPutItemWithUnknownIdServerReturn404(){
         //GIVEN
-        repository.add(new TodoItem("1", "super ", "IN_PROGRESS"));
+        repository.save(new TodoItem("1", "super ", "IN_PROGRESS"));
 
         TodoItem updatedTodo = new TodoItem("2", "super 2", "OPEN");
 
@@ -103,15 +103,13 @@ class TodoItemControllerTest {
 
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
-
-
     }
 
     @Test
     public void getTodoItemByIdShouldReturnTodoItem(){
         //GIVEN
-        repository.add(new TodoItem("1", "super ", "IN_PROGRESS"));
-        repository.add(new TodoItem("2", "super fancy", "OPEN"));
+        repository.save(new TodoItem("1", "super ", "IN_PROGRESS"));
+        repository.save(new TodoItem("2", "super fancy", "OPEN"));
 
         //WEN
         ResponseEntity<TodoItem> response = restTemplate.getForEntity("http://localhost:" + port + "/api/todo/2", TodoItem.class);
@@ -124,7 +122,7 @@ class TodoItemControllerTest {
     @Test
     public void getTodoItemByIdShouldReturn404WhenItemNotFound(){
         //GIVEN
-        repository.add(new TodoItem("1", "super ", "IN_PROGRESS"));
+        repository.save(new TodoItem("1", "super ", "IN_PROGRESS"));
 
         //WEN
         ResponseEntity<TodoItem> response = restTemplate.getForEntity("http://localhost:" + port + "/api/todo/2", TodoItem.class);
@@ -136,14 +134,14 @@ class TodoItemControllerTest {
     @Test
     public void deleteByIdShouldDeleteItemFromDb(){
         //GIVEN
-        repository.add(new TodoItem("1", "super", "IN_PROGRESS"));
-        repository.add(new TodoItem("2", "super fancy", "OPEN"));
+        repository.save(new TodoItem("1", "super", "IN_PROGRESS"));
+        repository.save(new TodoItem("2", "super fancy", "OPEN"));
 
         //WHEN
         restTemplate.delete("http://localhost:" + port + "/api/todo/2");
 
         //THEN
-        List<TodoItem> todoItems = repository.listItems();
+        List<TodoItem> todoItems = repository.findAll();
         assertThat(todoItems, containsInAnyOrder(
                 new TodoItem("1", "super", "IN_PROGRESS")));
     }

@@ -23,7 +23,7 @@ class TodoItemServiceTest {
     @Test
     public void listTodoItemsShouldReturnItemsFormRepository() {
         //GIVEN
-        when(repository.listItems()).thenReturn(List.of(
+        when(repository.findAll()).thenReturn(List.of(
                 new TodoItem("42", "Hallo", "OPEN"),
                 new TodoItem("33", "Todo", "IN_PROGRESS")));
 
@@ -62,7 +62,7 @@ class TodoItemServiceTest {
         service.addItem(itemToAdd);
 
         //THEN
-        verify(repository).add(new TodoItem("42", "Hallo", "OPEN"));
+        verify(repository).save(new TodoItem("42", "Hallo", "OPEN"));
     }
 
 
@@ -70,13 +70,13 @@ class TodoItemServiceTest {
     public void updateTodoItemShouldCallUpdateItemOnRepository(){
         //GIVEN
         TodoItem updatedItem = new TodoItem("42", "Hallo", "OPEN");
-        when(repository.update(updatedItem)).thenReturn(updatedItem);
+        when(repository.save(updatedItem)).thenReturn(updatedItem);
 
         //WHEN
         TodoItem todoItem = service.updateTodoItem(updatedItem);
 
         //THEN
-        verify(repository).update(new TodoItem("42", "Hallo", "OPEN"));
+        verify(repository).save(new TodoItem("42", "Hallo", "OPEN"));
         assertThat(todoItem, is(new TodoItem("42", "Hallo", "OPEN")));
     }
 
