@@ -1,8 +1,4 @@
 spring:
   data:
     mongodb:
-      database: todo
-  security:
-    user:
-      name: Bob
-      password: 1234
+      database: todos
