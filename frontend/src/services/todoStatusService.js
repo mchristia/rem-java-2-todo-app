@@ -10,6 +10,14 @@ const slugStatus = {
   done: 'DONE',
 }
 
+const statusTitle = {
+  OPEN: 'Todo',
+  IN_PROGRESS: 'Doing',
+  DONE: 'Done',
+}
+
 export const getNextStatus = status => nextStatus[status]
 
 export const slugToStatus = slug => slugStatus[slug]
+
+export const statusToTitle = status => statusTitle[status]

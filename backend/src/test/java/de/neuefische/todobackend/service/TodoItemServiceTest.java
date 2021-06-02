@@ -70,6 +70,7 @@ class TodoItemServiceTest {
     public void updateTodoItemShouldCallUpdateItemOnRepository(){
         //GIVEN
         TodoItem updatedItem = new TodoItem("42", "Hallo", "OPEN");
+        when(repository.existsById("42")).thenReturn(true);
         when(repository.save(updatedItem)).thenReturn(updatedItem);
 
         //WHEN

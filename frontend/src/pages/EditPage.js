@@ -1,16 +1,19 @@
-import {useParams} from "react-router-dom";
-import EditTodoForm from "../components/EditTodoForm";
+import { useParams } from 'react-router-dom'
+import EditTodoForm from '../components/EditTodoForm'
+import useTodo from '../hooks/useTodo'
 
-function EditPage({ todos,updateTodo }) {
-    const { id } = useParams()
+function EditPage() {
+  const { id } = useParams()
 
-    const todo = todos.find(item => item.id === id)
+  const { todo, updateTodo } = useTodo(id)
 
+  if (!todo) {
+    return null
+  }
 
-    return <div>
-        {todo && <EditTodoForm todo={todo} updateTodo={updateTodo}/>}
-    </div>
+  return (
+    <div>{todo && <EditTodoForm todo={todo} updateTodo={updateTodo} />}</div>
+  )
 }
-
 
 export default EditPage
