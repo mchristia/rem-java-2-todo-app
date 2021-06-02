@@ -1,7 +1,11 @@
 import Main from '../components/Main'
 import Board from '../components/Board'
 import { useParams } from 'react-router-dom'
-import { slugToStatus } from '../services/todoStatusService'
+import {
+  getNextStatus,
+  slugToStatus,
+  statusToTitle,
+} from '../services/todoStatusService'
 import Header from '../components/Header'
 import Page from '../components/Page'
 import Navigation from '../components/Navigation'
@@ -32,10 +36,10 @@ export default function BoardPage({ todos, onAdvance, onRemove }) {
       <Navigation />
       <Main>
         <Board
-          title="Todo"
-          todos={filteredTodos}
-          onAdvance={onAdvance}
-          onRemove={onRemove}
+          title={statusToTitle(statusType)}
+          todos={todos}
+          onAdvance={advanceTodo}
+          onRemove={removeTodo}
         />
       </Main>
     </Wrapper>
