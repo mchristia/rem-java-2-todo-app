@@ -3,27 +3,11 @@ import Navigation from '../components/Navigation'
 import Page from '../components/Page'
 import AddATodo from '../components/AddATodo'
 import Boards from '../components/Boards'
-import PropTypes from 'prop-types'
+import useTodos from '../hooks/useTodos'
 
-HomePage.propTypes = {
-  todos: PropTypes.arrayOf(
-    PropTypes.shape({
-      status: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  addNewTodo: PropTypes.func.isRequired,
-  advanceTodo: PropTypes.func.isRequired,
-  removeTodo: PropTypes.func.isRequired,
-}
+export default function HomePage() {
+  const { todos, addNewTodo, advanceTodo, removeTodo } = useTodos()
 
-export default function HomePage({
-  todos,
-  addNewTodo,
-  advanceTodo,
-  removeTodo,
-}) {
   return (
     <Page>
       <Header />
