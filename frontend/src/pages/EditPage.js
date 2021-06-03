@@ -1,18 +1,22 @@
 import { useParams } from 'react-router-dom'
 import EditTodoForm from '../components/EditTodoForm'
 import useTodo from '../hooks/useTodo'
+import Navigation from '../components/Navigation'
+import Page from '../components/Page'
 
-function EditPage() {
+function EditPage({ token }) {
   const { id } = useParams()
-
-  const { todo, updateTodo } = useTodo(id)
+  const { todo, updateTodo } = useTodo(id, token)
 
   if (!todo) {
     return null
   }
 
   return (
-    <div>{todo && <EditTodoForm todo={todo} updateTodo={updateTodo} />}</div>
+    <Page>
+      <Navigation />
+      {todo && <EditTodoForm todo={todo} updateTodo={updateTodo} />}
+    </Page>
   )
 }
 

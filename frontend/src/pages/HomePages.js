@@ -5,8 +5,8 @@ import AddATodo from '../components/AddATodo'
 import Boards from '../components/Boards'
 import useTodos from '../hooks/useTodos'
 
-export default function HomePage() {
-  const { todos, addNewTodo, advanceTodo, removeTodo } = useTodos()
+export default function HomePage({ token }) {
+  const { todos, addNewTodo, advanceTodo, removeTodo } = useTodos(token)
 
   return (
     <Page>
