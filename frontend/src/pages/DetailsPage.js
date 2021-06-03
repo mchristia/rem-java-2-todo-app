@@ -6,10 +6,10 @@ import Main from '../components/Main'
 import styled from 'styled-components/macro'
 import useTodo from '../hooks/useTodo'
 
-export default function DetailsPage({ token }) {
+export default function DetailsPage() {
   const { id } = useParams()
 
-  const { todo } = useTodo(id, token)
+  const { todo } = useTodo(id)
 
   if (!todo) {
     return null

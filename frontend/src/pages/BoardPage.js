@@ -8,11 +8,11 @@ import Navigation from '../components/Navigation'
 import styled from 'styled-components/macro'
 import useTodos from '../hooks/useTodos'
 
-export default function BoardPage({ token }) {
+export default function BoardPage() {
   const { status } = useParams()
   const statusType = slugToStatus(status)
 
-  const { getTodosByStatus, advanceTodo, removeTodo } = useTodos(token)
+  const { getTodosByStatus, advanceTodo, removeTodo } = useTodos()
 
   const todos = getTodosByStatus(statusType)
 

@@ -4,9 +4,9 @@ import useTodo from '../hooks/useTodo'
 import Navigation from '../components/Navigation'
 import Page from '../components/Page'
 
-function EditPage({ token }) {
+function EditPage() {
   const { id } = useParams()
-  const { todo, updateTodo } = useTodo(id, token)
+  const { todo, updateTodo } = useTodo(id)
 
   if (!todo) {
     return null

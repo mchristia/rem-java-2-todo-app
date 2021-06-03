@@ -1,9 +1,11 @@
 import axios from 'axios'
 import { getNextStatus } from '../services/todoStatusService'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import AuthContext from '../context/AuthContext'
 
-export default function useTodos(token) {
+export default function useTodos() {
   const [todos, setTodos] = useState([])
+  const { token } = useContext(AuthContext)
 
   const config = {
     headers: {

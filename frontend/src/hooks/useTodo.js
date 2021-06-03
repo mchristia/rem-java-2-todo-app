@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import AuthContext from '../context/AuthContext'
 
-export default function useTodo(id, token) {
+export default function useTodo(id) {
   const [todo, setTodo] = useState()
-
+  const { token } = useContext(AuthContext)
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
