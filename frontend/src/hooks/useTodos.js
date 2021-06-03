@@ -1,13 +1,21 @@
 import axios from 'axios'
 import { getNextStatus } from '../services/todoStatusService'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import AuthContext from '../context/AuthContext'
 
 export default function useTodos() {
   const [todos, setTodos] = useState([])
+  const { token } = useContext(AuthContext)
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
 
   const addNewTodo = description => {
     axios
-      .post('/api/todo', { description, status: 'OPEN' })
+      .post('/api/todo', { description, status: 'OPEN' }, config)
       .then(response => response.data)
       .then(newTodoItem => setTodos([...todos, newTodoItem]))
       .catch(error => console.error(error))
@@ -15,10 +23,14 @@ export default function useTodos() {
 
   const advanceTodo = todo => {
     axios
-      .put('/api/todo/' + todo.id, {
-        ...todo,
-        status: getNextStatus(todo.status),
-      })
+      .put(
+        '/api/todo/' + todo.id,
+        {
+          ...todo,
+          status: getNextStatus(todo.status),
+        },
+        config
+      )
       .then(response => response.data)
       .then(updatedTodo => {
         setTodos(todos.map(item => (item.id === todo.id ? updatedTodo : item)))
@@ -27,14 +39,14 @@ export default function useTodos() {
   }
 
   const removeTodo = id => {
-    axios.delete('/api/todo/' + id).then(() => {
+    axios.delete('/api/todo/' + id, config).then(() => {
       setTodos(todos.filter(todo => todo.id !== id))
     })
   }
 
   useEffect(() => {
     axios
-      .get('/api/todo')
+      .get('/api/todo', config)
       .then(response => response.data)
       .then(todos => setTodos(todos))
       .catch(error => console.error(error))
