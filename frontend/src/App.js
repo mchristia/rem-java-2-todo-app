@@ -1,8 +1,4 @@
-import {
-  Route,
-  Switch,
-  useHistory,
-} from 'react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import BoardPage from './pages/BoardPage'
 import HomePage from './pages/HomePages'
 import DetailsPage from './pages/DetailsPage'
